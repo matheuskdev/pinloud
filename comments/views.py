@@ -12,6 +12,10 @@ class CommentListCreateView(generics.ListCreateAPIView):
         serializer = CommentSerializer(comments, many=True)  
         return Response(serializer.data)
     
+    def get_queryset(self):
+        pin_id = self.kwargs.get('pin_id')
+        return Comment.objects.filter(pin_id=pin_id)
+    
 
 class CommentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment
