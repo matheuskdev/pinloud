@@ -4,8 +4,8 @@ from pins.models import Pin
 
 class Comment(models.Model):
     comment = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    pin = models.ForeignKey(Pin, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pin = models.ForeignKey(Pin, on_delete=models.CASCADE, related_name='comments')  # Adicione o related_name aqui
 
     def __str__(self) -> str:
         return self.comment
