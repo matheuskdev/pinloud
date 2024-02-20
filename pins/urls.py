@@ -14,8 +14,7 @@ urlpatterns = [
     ),
     path(
         'pins/<int:pk>/comments/',
-        views.PinListView.as_view(),
+        views.PinCommentLikeListView.as_view(),
         name='pin-retrieve'
     ),
-
 ]
