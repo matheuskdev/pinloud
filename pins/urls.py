@@ -8,23 +8,13 @@ urlpatterns = [
         name='pin-list'
     ),
     path(
-        'pins/<int:pk>/like',
+        'pins/<int:pk>',
         views.PinRetrieveUpdateDestroyView.as_view(),
         name='pin-detail'
     ),
     path(
-        'pins/<int:pk>/',
-        views.LikePinListCreateView.as_view(),
-        name='like-pin-list'
-    ),
-    path(
-        'pins/<int:pk>/like',
-        views.LikePinDestroyView.as_view(),
-        name='like-pin-delete'
-    ),
-    path(
         'pins/<int:pk>/comments/',
-        views.PinRetriveView.as_view(),
+        views.PinListView.as_view(),
         name='pin-retrieve'
     ),
 
