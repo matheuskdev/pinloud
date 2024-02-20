@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from accounts.serializers import UserSerializer
-from .models import Pin, Like
+from .models import Pin
 from accounts.models import User
 from comments.serializers import CommentSerializer
+from likes.serializers import LikePinSerializer
 
 
 
@@ -20,13 +21,6 @@ class PinSerializer(serializers.ModelSerializer):
         representation['user'] = UserSerializer(instance.user).data
         return representation
 
-
-
-class LikePinSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Like
-        fields = '__all__'
 
 
 class PinCommentSerializer(serializers.ModelSerializer):

@@ -19,9 +19,3 @@ class Pin(models.Model):
 
     def __str__(self) -> str:
         return self.title
-
-
-class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pin = models.ForeignKey(Pin, on_delete=models.CASCADE, related_name='likes')
-    created_at = models.DateTimeField(auto_now_add=True)

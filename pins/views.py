@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
-from .models import Pin, Like
-from .serializers import PinSerializer, LikePinSerializer, PinCommentSerializer
+from rest_framework.permissions import IsAuthenticated
+from .models import Pin
+from .serializers import PinSerializer, PinCommentSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -9,6 +10,7 @@ class PinListCreateView(
     #LoginRequiredMixin, 
     generics.ListCreateAPIView
 ):
+    permission_classes = (IsAuthenticated,)
     queryset = Pin.objects.all()
     serializer_class = PinSerializer
 
@@ -21,31 +23,6 @@ class PinRetrieveUpdateDestroyView(
     serializer_class = PinSerializer
 
 
-class LikePinListCreateView(generics.ListCreateAPIView):
-    queryset = Like.objects.all()
-    serializer_class = LikePinSerializer
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        pin = self.get_object()
-        serializer.save(user=self.request.user, pin=pin)
-
-    def get_object(self):
-        return Pin.objects.get(id=self.kwargs['post_id'])
-
-
-class LikePinDestroyView(generics.DestroyAPIView):
-    queryset = Like.objects.all()
-    serializer_class = LikePinSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        return Like.objects.get(user=self.request.user, pin=self.get_post())
-
-    def get_post(self):
-        return Pin.objects.get(id=self.kwargs['post_id'])
-    
-
-class PinRetriveView(generics.RetrieveAPIView):
+class PinListView(generics.ListAPIView):
     queryset = Pin.objects.all()
     serializer_class = PinCommentSerializer

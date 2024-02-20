@@ -21,11 +21,13 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'rest_framework',
+    'rest_framework_simplejwt',
 
     'accounts',
     'authentications',
     'comments',
     'ideas',
+    'likes',
     'pins',
 ]
 
@@ -157,7 +159,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-SIMPLE_JWT = {
+""" SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
@@ -180,3 +182,4 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIMIT':  1,
 }
+ """
