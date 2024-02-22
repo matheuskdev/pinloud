@@ -19,10 +19,12 @@ class PinRetrieveUpdateDestroyView(
     #LoginRequiredMixin,
     generics.RetrieveUpdateDestroyAPIView
 ):
+    permission_classes = (IsAuthenticated,)
     queryset = Pin.objects.all()
     serializer_class = PinSerializer
 
 
-class PinListView(generics.ListAPIView):
+class PinCommentLikeListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Pin.objects.all()
     serializer_class = PinCommentSerializer

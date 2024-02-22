@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 
 
+@admin.register(User)
 class CustomUserAdmin(BaseUserAdmin):
     model = User
     list_display = (
@@ -42,4 +43,3 @@ class CustomUserAdmin(BaseUserAdmin):
     ordering = ('email',)
     readonly_fields = ('last_login','date_joined',)
 
-admin.site.register(User, CustomUserAdmin)
