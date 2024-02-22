@@ -1,12 +1,14 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+
 from .models import Comment
 from .serializers import CommentSerializer
-from rest_framework.response import Response
 
 
 class CommentListCreateView(generics.ListCreateAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
     def get(self, request, *args, **kwargs):
         comments = Comment.objects.all()
