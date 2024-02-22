@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'corsheaders',
 
     'rest_framework',
@@ -47,9 +47,9 @@ MIDDLEWARE = [
 ]
 
 
-""" 
+"""
 # HOW DEFINE CORS ALLOWED.
-CORS_ALLOWED_ORIGINS = ['*'] 
+CORS_ALLOWED_ORIGINS = ['*']
 """
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -111,18 +111,18 @@ DATABASES = {
 
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME':
+     'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+     },
+    {'NAME':
+     'django.contrib.auth.password_validation.MinimumLengthValidator',
+     },
+    {'NAME':
+     'django.contrib.auth.password_validation.CommonPasswordValidator',
+     },
+    {'NAME':
+     'django.contrib.auth.password_validation.NumericPasswordValidator',
+     },
 ]
 
 
@@ -134,7 +134,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#CONFIG MEDIA
+# CONFIG MEDIA
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates/static'),)
 STATIC_ROOT = os.path.join('static')
@@ -150,8 +150,8 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # Nome da URL da página de login
-LOGIN_URL = '/admin/login'  
-LOGIN_REDIRECT_URL = '/api/v1/pins' 
+LOGIN_URL = '/admin/login'
+LOGIN_REDIRECT_URL = '/api/v1/pins'
 AUTH_USER_MODEL = 'accounts.User'
 
 
@@ -184,4 +184,4 @@ REST_FRAMEWORK = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIMIT':  1,
 }
- """
+"""
