@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Idea
 
+
 @admin.register(Idea)
 class IdeaAdmin(admin.ModelAdmin):
     fields = ('title', 'user', 'created_at')
