@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+
 class UserModelTests(TestCase):
     def setUp(self):
         self.user_data = {
@@ -40,7 +41,9 @@ class UserModelTests(TestCase):
 
     def test_email_normalize(self):
         # Testa se o email é normalizado corretamente
-        normalized_email = get_user_model().objects.normalize_email('testuser@EXAMPLE.com')
+        normalized_email = get_user_model().objects.normalize_email(
+            'testuser@EXAMPLE.com'
+        )
         self.assertEqual(normalized_email, 'testuser@example.com')
 
     def test_str_representation(self):

@@ -41,5 +41,4 @@ class CustomUserAdmin(BaseUserAdmin):
     )
     search_fields = ('email', 'username')
     ordering = ('email',)
-    readonly_fields = ('last_login','date_joined',)
-
+    readonly_fields = ('last_login', 'date_joined', )
