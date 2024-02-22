@@ -5,7 +5,6 @@ from .serializers import LikePinSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
-
 class LikePinCreateView(generics.CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikePinSerializer
@@ -29,4 +28,3 @@ class LikePinDestroyView(generics.DestroyAPIView):
 
     def get_post(self):
         return Pin.objects.get(id=self.kwargs['post_id'])
-    

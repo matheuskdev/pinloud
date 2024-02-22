@@ -11,7 +11,7 @@ class LikePinSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_rate(self, object) -> float:
-        rate =object.likes.aggregate(Avg('likes'))['likes__avg']
-        if rate: return round(rate, 1)
+        rate = object.likes.aggregate(Avg('likes'))['likes__avg']
+        if rate:
+            return round(rate, 1)
         return None
-
