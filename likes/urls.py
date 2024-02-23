@@ -3,13 +3,20 @@ from . import views
 
 urlpatterns = [
     path(
-        'pins/<int:pk>/like/',
-        views.LikePinCreateView.as_view(),
-        name='like-pin-create'
+        'likes/<int:pk>/',
+        views.LikePinDestroyView.as_view(),
+        name='like_pin_delete'
     ),
     path(
-        'pins/<int:pk>/like',
-        views.LikePinDestroyView.as_view(),
-        name='like-pin-delete'
+        'likes/',
+        views.LikePinListView.as_view(),
+        name='like_pin_list'
     ),
+    path(
+        'pins/<int:pk>/likes/',
+        views.LikePinCreateView.as_view(),
+        name='like_pin_create'
+        ),
+path('pins/<int:pk>/likes/', views.LikePinListView.as_view(), name='like_pin_list')
+
 ]
