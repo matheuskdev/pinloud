@@ -5,16 +5,21 @@ urlpatterns = [
     path(
         'pins/',
         views.PinListCreateView.as_view(),
-        name='pin-list'
+        name='pin_list'
     ),
     path(
-        'pins/<int:pk>',
+        'pins/<int:pk>/',
         views.PinRetrieveUpdateDestroyView.as_view(),
-        name='pin-detail'
+        name='pin_detail'
     ),
     path(
-        'pins/<int:pk>/comments/',
-        views.PinCommentLikeListView.as_view(),
-        name='pin-retrieve'
+        'pins/<int:pk>/all/',
+        views.PinAllDataRetriveView.as_view(),
+        name='pin_all_data_retrive'
     ),
+    path(
+        'pins/all_data/',
+        views.PinAllDataListView.as_view(),
+        name='pin_all_data'
+    )
 ]

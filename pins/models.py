@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from ideas.models import Idea
 
 
 class Pin(models.Model):
@@ -11,6 +12,7 @@ class Pin(models.Model):
         related_name='pins',
         on_delete=models.CASCADE
     )
+    ideas =  models.ManyToManyField(Idea, related_name='pins')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

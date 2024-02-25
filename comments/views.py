@@ -8,7 +8,7 @@ from .serializers import CommentSerializer
 class CommentListCreateView(generics.ListCreateAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
 
     def get(self, request, *args, **kwargs):
         comments = Comment.objects.all()
@@ -16,10 +16,11 @@ class CommentListCreateView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
     def get_queryset(self):
-        pin_id = self.kwargs.get('pin_id')
+        pin_id = self.kwargs.get('pk')
         return Comment.objects.filter(pin_id=pin_id)
 
 
 class CommentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
