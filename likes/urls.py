@@ -9,14 +9,7 @@ urlpatterns = [
     ),
     path(
         'likes/',
-        views.LikePinListView.as_view(),
-        name='like_pin_list'
-    ),
-    path(
-        'pins/<int:pk>/likes/',
-        views.LikePinCreateView.as_view(),
-        name='like_pin_create'
+        views.LikeListCreateView.as_view(),
+        name='like_pin_list_create'
         ),
-path('pins/<int:pk>/likes/', views.LikePinListView.as_view(), name='like_pin_list')
-
 ]

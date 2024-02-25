@@ -15,6 +15,7 @@ class CustomUserManager(BaseUserManager):
         # Cria um novo usuário com os campos fornecidos
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
+
         # Salva o usuário no banco de dados usando o banco de dados padrão
         user.save(using=self._db)
         return user
