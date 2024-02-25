@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'ideas',
     'likes',
     'pins',
+    'saves',
 ]
 
 
