@@ -1,11 +1,31 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 from rest_framework import serializers
+from rest_framework.response import Response
 
 from pins.models import Pin
 
 from .models import Like
 from .serializers import LikePinSerializer
+
+class LikeListCreateView(generics.ListCreateAPIView):
+    queryset = Like
+    serializer_class = LikePinSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
+
+    def get(self, request, *args, **kwargs):
+        comments = Like.objects.all()
+        serializer = LikePinSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    def get_queryset(self):
+        pin_id = self.kwargs.get('pk')
+        return Like.objects.filter(pin_id=pin_id)
+
+
+
+
+
 
 
 class LikePinCreateView(generics.CreateAPIView):
@@ -16,14 +36,10 @@ class LikePinCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         pin_id = self.kwargs.get('pk')
-
-        # Verificar se já existe um Like com a mesma combinação de user e pin
         existing_like = Like.objects.filter(user=user, pin_id=pin_id).first()
-
         if existing_like:
             # Retornar uma resposta indicando que o Like já existe
             raise serializers.ValidationError(detail="Você já curtiu este Pin.", code=400)
-
         # Se não existir, criar o novo Like
         serializer.save(user=user, pin_id=pin_id)
 

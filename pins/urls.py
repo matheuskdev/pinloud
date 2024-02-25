@@ -13,7 +13,7 @@ urlpatterns = [
         name='pin_detail'
     ),
     path(
-        'pins/<int:pk>/all/',
+        'pins/all_data/<int:pk>',
         views.PinAllDataRetriveView.as_view(),
         name='pin_all_data_retrive'
     ),
