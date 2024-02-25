@@ -1,5 +1,10 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly,IsAuthenticated, 
+)
 from rest_framework.response import Response
+
+from core.permissions import IsOwnerOrAdmin
 
 from .models import Comment
 from .serializers import CommentSerializer
@@ -8,7 +13,7 @@ from .serializers import CommentSerializer
 class CommentListCreateView(generics.ListCreateAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
+    permission_classes = [IsAuthenticatedOrReadOnly,]
 
     def get(self, request, *args, **kwargs):
         comments = Comment.objects.all()
@@ -23,4 +28,4 @@ class CommentListCreateView(generics.ListCreateAPIView):
 class CommentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdmin,]
