@@ -37,4 +37,5 @@ urlpatterns = [
     path('api/v1/', include('ideas.urls')),
     path('api/v1/', include('likes.urls')),
     path('api/v1/', include('pins.urls')),
+    path('api/v1/', include('saves.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

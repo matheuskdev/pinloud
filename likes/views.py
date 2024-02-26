@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -24,13 +26,15 @@ class LikeListCreateView(generics.ListCreateAPIView):
         return Like.objects.filter(pin_id=pin_id)
 
 
-class LikePinDestroyView(generics.DestroyAPIView):
+class LikePinDestroyView(generics.RetrieveDestroyAPIView):
     queryset = Like.objects.all()
     serializer_class = LikePinSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrAdmin,]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrAdmin]
 
     def get_object(self):
-        return Like.objects.get(user=self.request.user, pin=self.get_post())
+        user = self.request.user
+        pin = self.get_pin()
+        return get_object_or_404(Like, user=user, pin=pin)
 
-    def get_post(self):
-        return Pin.objects.get(id=self.kwargs['pk'])
+    def get_pin(self):
+        return get_object_or_404(Pin, id=self.kwargs['pk'])
