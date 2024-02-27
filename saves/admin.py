@@ -1,3 +1,10 @@
 from django.contrib import admin
+from .models import SavedPin
 
-# Register your models here.
+
+@admin.register(SavedPin)
+class SavadPinAdmin(admin.ModelAdmin):
+    fields = ('user', 'pin', 'created_at',)
+    search_fields = ('pin', 'user', 'created_at',)
+    ordering = ('pin',)
+    readonly_fields = ('created_at',)
