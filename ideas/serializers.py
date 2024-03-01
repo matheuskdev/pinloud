@@ -6,4 +6,4 @@ class IdeaModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Idea
-        fields = '__all__'
+        fields = ['title',]
