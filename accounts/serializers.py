@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,20 +24,18 @@ class UserSerializer(serializers.ModelSerializer):
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['email', 'password', 'username', 'first_name', 'last_name']
+        fields = ['email', 'password', 'username',]
 
     def validate_email(self, value):
-        if self.model.objects.filter(email=value).exists():
+        if self.Meta.model.objects.filter(email=value).exists():
             raise serializers.ValidationError('Este e-mail já está em uso.')
         return value
 
     def validate_username(self, value):
-        if self.model.objects.filter(username=value).exists():
-            raise serializers.ValidationError(
-                'Este nome de usuário já está em uso.'
-            )
+        if self.Meta.model.objects.filter(username=value).exists():
+            raise serializers.ValidationError('Este nome de usuário já está em uso.')
         return value
-
+    
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
@@ -45,3 +43,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields ='__all__'

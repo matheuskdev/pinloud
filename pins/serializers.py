@@ -14,7 +14,7 @@ class PinSerializer(serializers.ModelSerializer):
         queryset=User.objects.all(),
         write_only=True
     )
-
+    ideas = IdeaModelSerializer(many=True, read_only=True)
     class Meta:
         model = Pin
         fields = (
@@ -38,10 +38,19 @@ class PinAllDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pin
         fields = [
-            'id', 'title', 'description', 
+            'id', 'title', 'description', 'image',
             'user', 'comments', 'likes','ideas', 'total_likes'
         ]
 
     def get_total_likes(self, object) -> float:
         total_likes = object.likes.count()
         return round(total_likes, 1) if total_likes else None
+
+class PinUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pin
+        fields = ('id', 'image',  )
+
+
+
