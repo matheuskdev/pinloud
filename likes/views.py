@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework import generics
+from rest_framework import generics, status, serializers
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
@@ -12,18 +12,19 @@ from .serializers import LikePinSerializer
 
 
 class LikeListCreateView(generics.ListCreateAPIView):
-    queryset = Like
+    queryset = Like.objects.all()
     serializer_class = LikePinSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get(self, request, *args, **kwargs):
-        comments = Like.objects.all()
-        serializer = LikePinSerializer(comments, many=True)
-        return Response(serializer.data)
+    def perform_create(self, serializer):
+        user = self.request.user
+        pin_id = self.request.data.get('pin')
+        pin = get_object_or_404(Pin, pk=pin_id)
 
-    def get_queryset(self):
-        pin_id = self.kwargs.get('pk')
-        return Like.objects.filter(pin_id=pin_id)
+        if Like.objects.filter(user=user, pin=pin).exists():
+            raise serializers.ValidationError('Você já salvou este pin.')
+
+        serializer.save(user=user, pin=pin)
 
 
 class LikePinDestroyView(generics.RetrieveDestroyAPIView):
