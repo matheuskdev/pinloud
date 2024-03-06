@@ -10,7 +10,7 @@ class UserRegistrationView(generics.CreateAPIView):
     name = 'user_registration'
     queryset = get_user_model().objects.all()
     serializer_class = UserRegistrationSerializer
-    permission_classes = [permissions.AllowAny,]
+    permission_classes = [permissions.AllowAny]
 
 
 class UserProfileView(generics.RetrieveAPIView):
@@ -24,3 +24,16 @@ class UserProfileView(generics.RetrieveAPIView):
             'user': user_serializer.data,
             'pins': pins_serializer.data
         })
+
+class UserLoggedView(generics.RetrieveAPIView):
+    name = 'user_logged'
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user_serializer = UserSerializer(user, many=False)
+        pins = Pin.objects.filter(user=user)
+        pins_serializer = PinUserSerializer(pins, many=True)
+        return Response({
+            'user': user_serializer.data,
+            'pins': pins_serializer.data
+        })
+ 
