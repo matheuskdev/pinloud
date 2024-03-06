@@ -8,19 +8,20 @@ from likes.serializers import LikePinSerializer
 
 from .models import Pin
 
-
 class PinSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        write_only=True
-    )
     ideas = IdeaModelSerializer(many=True, read_only=True)
+
     class Meta:
         model = Pin
         fields = (
-            'id', 'title', 'description', 'image', 'ideas', 'user',
+            'id', 'title', 'description', 'image', 'ideas',
             'created_at', 'updated_at'
         )
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        pin = super().create({**validated_data, 'user': user})
+        return pin
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

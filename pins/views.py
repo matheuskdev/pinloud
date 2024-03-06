@@ -18,7 +18,10 @@ class PinListCreateView(generics.ListCreateAPIView):
     serializer_class = PinSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = PinFilter
-
+    
+    def perform_create(self, serializer):
+        # Atribui automaticamente o usuário da solicitação ao objeto
+        serializer.save(user=self.request.user)
 
 class PinRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrAdmin, ]
