@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from django.contrib.sites.shortcuts import get_current_site
+from rest_framework import serializers
+
 from accounts.serializers import UserSerializer
 from comments.serializers import CommentSerializer
 from ideas.serializers import IdeaModelSerializer
@@ -7,65 +8,85 @@ from likes.serializers import LikePinSerializer
 
 from .models import Pin
 
+
 class PinSerializer(serializers.ModelSerializer):
     ideas = IdeaModelSerializer(many=True, read_only=True)
 
     class Meta:
         model = Pin
         fields = (
-            'id', 'title', 'description', 'image', 'ideas',
-            'created_at', 'updated_at'
+            "id",
+            "title",
+            "description",
+            "image",
+            "ideas",
+            "created_at",
+            "updated_at",
         )
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        pin = super().create({**validated_data, 'user': user})
+        user = self.context["request"].user
+        pin = super().create({**validated_data, "user": user})
         return pin
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['user'] = UserSerializer(instance.user).data
+        representation["user"] = UserSerializer(instance.user).data
         return representation
 
 
 class PinAllDataSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    comments = CommentSerializer(many=True, read_only=True,)
+    comments = CommentSerializer(
+        many=True,
+        read_only=True,
+    )
     likes = LikePinSerializer(many=True, read_only=True)
     total_likes = serializers.SerializerMethodField(read_only=True)
     ideas = IdeaModelSerializer(many=True, read_only=True)
-                           
+
     class Meta:
         model = Pin
         fields = [
-            'id', 'title', 'description', 'image',
-            'user', 'comments', 'likes','ideas', 'total_likes'
+            "id",
+            "title",
+            "description",
+            "image",
+            "user",
+            "comments",
+            "likes",
+            "ideas",
+            "total_likes",
         ]
 
     def get_total_likes(self, object) -> float:
         total_likes = object.likes.count()
         return round(total_likes, 1) if total_likes else None
 
+
 class PinUserSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = Pin
-        fields = ('id', 'image',  )
+        fields = (
+            "id",
+            "image",
+        )
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         # Garanta que a URL da imagem seja absoluta
-        if 'image' in representation and representation['image']:
-            request = self.context.get('request', None)
+        if "image" in representation and representation["image"]:
+            request = self.context.get("request", None)
             if request is not None:
-                representation['image'] = request.build_absolute_uri(
+                representation["image"] = request.build_absolute_uri(
                     instance.image.url
                 )
             else:
-                # Se a solicitação não estiver disponível, construa a URL com base no site atual
                 current_site = get_current_site(None)
                 domain = current_site.domain
-                representation['image'] = f'http://{domain}{instance.image.url}'
+                representation["image"] = (
+                    f"http://{domain}{instance.image.url}"
+                )
         return representation
-

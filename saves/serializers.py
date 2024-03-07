@@ -6,4 +6,4 @@ from .models import SavedPin
 class SavedPinSerializer(serializers.ModelSerializer):
     class Meta:
         model = SavedPin
-        fields = ['user', 'pin', 'created_at']
+        fields = ["user", "pin", "created_at"]

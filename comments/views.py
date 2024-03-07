@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import (
-    IsAuthenticatedOrReadOnly,IsAuthenticated, 
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
 )
 from rest_framework.response import Response
 
@@ -13,7 +14,9 @@ from .serializers import CommentSerializer
 class CommentListCreateView(generics.ListCreateAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+    ]
 
     def get(self, request, *args, **kwargs):
         comments = Comment.objects.all()
@@ -21,7 +24,7 @@ class CommentListCreateView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
     def get_queryset(self):
-        pin_id = self.kwargs.get('pk')
+        pin_id = self.kwargs.get("pk")
         return Comment.objects.filter(pin_id=pin_id)
 
     def perform_create(self, serializer):
@@ -31,4 +34,7 @@ class CommentListCreateView(generics.ListCreateAPIView):
 class CommentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrAdmin,]
+    permission_classes = [
+        IsAuthenticated,
+        IsOwnerOrAdmin,
+    ]

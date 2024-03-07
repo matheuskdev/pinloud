@@ -1,13 +1,15 @@
+import os
+from io import BytesIO
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db.models import signals
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from django.db.models import signals
-from .models import Pin
-import os
 from core import settings
+
+from .models import Pin
 
 
 def draw_image(main_image, instance):
@@ -27,7 +29,7 @@ def draw_image(main_image, instance):
 def apply_watermark(sender, instance, created, **kwargs):
     if created:
         watermark_path = os.path.join(
-            settings.BASE_DIR, 'templates/static/img/Logo_Pinloud_Branca.png'
+            settings.BASE_DIR, "templates/static/img/Logo_Pinloud_Branca.png"
         )
         watermark = Image.open(watermark_path)
 
@@ -42,17 +44,17 @@ def apply_watermark(sender, instance, created, **kwargs):
 
         # Converta a imagem final de volta para um arquivo
         output = BytesIO()
-        main_image.save(output, format='PNG')
+        main_image.save(output, format="PNG")
         output.seek(0)
 
         # Substitui o arquivo  original pelo novo arquivo com marca d'água
         instance.image = InMemoryUploadedFile(
             output,
-            'ImageField',
+            "ImageField",
             f"{instance.image.name.split('.')[0]}_watermarked.png",
-            'image/png',
+            "image/png",
             output.tell(),
-            None
+            None,
         )
 
         instance.save()

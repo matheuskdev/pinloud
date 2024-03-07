@@ -1,15 +1,12 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
+    path("ideas/", views.IdeaListCreateView.as_view(), name="idea-list"),
     path(
-        'ideas/',
-        views.IdeaListCreateView.as_view(),
-        name='idea-list'
-    ),
-    path(
-        'ideas/<int:pk>/',
+        "ideas/<int:pk>/",
         views.IdeaRetrieveUpdateDestroyView.as_view(),
-        name='idea-detail'
+        name="idea-detail",
     ),
 ]
