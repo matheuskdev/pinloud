@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-
+from django.contrib.sites.shortcuts import get_current_site
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,3 +49,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields ='__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Garanta que a URL da imagem seja absoluta
+        if 'profile_picture' in representation and representation['profile_picture']:
+            request = self.context.get('request', None)
+            if request is not None:
+                representation['profile_picture'] = request.build_absolute_uri(
+                    instance.profile_picturege.url
+                )
+            else:
+                # Se a solicitação não estiver disponível, construa a URL com base no site atual
+                current_site = get_current_site(None)
+                domain = current_site.domain
+                representation['profile_picture'] = f'http://{domain}{instance.profile_picture.url}'
+        return representation
+

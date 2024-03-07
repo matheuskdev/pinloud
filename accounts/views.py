@@ -30,7 +30,11 @@ class UserLoggedView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        user_serializer = UserSerializer(user, many=False)
+        user_serializer = UserSerializer(
+            user,
+            many=False,
+            context={'request': request}
+        ).data
         pins = Pin.objects.filter(user=user)
         pins_data = PinUserSerializer(
             pins,
@@ -39,6 +43,6 @@ class UserLoggedView(generics.RetrieveAPIView):
         ).data
         
         return Response({
-            'user': user_serializer.data,
+            'user': user_serializer,
             'pins': pins_data
         })

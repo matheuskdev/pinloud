@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-
 from accounts.serializers import UserSerializer
-from accounts.models import User
 from comments.serializers import CommentSerializer
 from ideas.serializers import IdeaModelSerializer
 from likes.serializers import LikePinSerializer
