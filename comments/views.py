@@ -24,6 +24,9 @@ class CommentListCreateView(generics.ListCreateAPIView):
         pin_id = self.kwargs.get('pk')
         return Comment.objects.filter(pin_id=pin_id)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class CommentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment
