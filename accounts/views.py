@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
 from .serializers import UserRegistrationSerializer, UserSerializer
-from pins.serializers import PinUserSerializer
+from pins.serializers import PinSerializer, PinUserSerializer
 from pins.models import Pin
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -27,13 +27,18 @@ class UserProfileView(generics.RetrieveAPIView):
 
 class UserLoggedView(generics.RetrieveAPIView):
     name = 'user_logged'
+
     def get(self, request, *args, **kwargs):
         user = request.user
         user_serializer = UserSerializer(user, many=False)
         pins = Pin.objects.filter(user=user)
-        pins_serializer = PinUserSerializer(pins, many=True)
+        pins_data = PinUserSerializer(
+            pins,
+            many=True,
+            context={'request': request}
+        ).data
+        
         return Response({
             'user': user_serializer.data,
-            'pins': pins_serializer.data
+            'pins': pins_data
         })
- 

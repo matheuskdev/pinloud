@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
 from accounts.serializers import UserSerializer
 from accounts.models import User
@@ -48,10 +50,25 @@ class PinAllDataSerializer(serializers.ModelSerializer):
         return round(total_likes, 1) if total_likes else None
 
 class PinUserSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = Pin
         fields = ('id', 'image',  )
 
-
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Garanta que a URL da imagem seja absoluta
+        if 'image' in representation and representation['image']:
+            request = self.context.get('request', None)
+            if request is not None:
+                representation['image'] = request.build_absolute_uri(
+                    instance.image.url
+                )
+            else:
+                # Se a solicitação não estiver disponível, construa a URL com base no site atual
+                current_site = get_current_site(None)
+                domain = current_site.domain
+                representation['image'] = f'http://{domain}{instance.image.url}'
+        return representation
 
