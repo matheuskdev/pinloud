@@ -6,7 +6,7 @@ class Idea(models.Model):
     title = models.CharField(max_length=250)
     user = models.ForeignKey(
         User,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='ideas'
     )
     created_at = models.DateField(auto_now_add=True)

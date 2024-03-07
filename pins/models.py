@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from accounts.models import User
 from ideas.models import Idea
 
@@ -6,7 +7,10 @@ from ideas.models import Idea
 class Pin(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(upload_to='pins/')
+    image = models.ImageField(
+        upload_to='pins/',
+        validators=[FileExtensionValidator(['PNG', 'JPG', 'JPEG'])]
+        )
     user = models.ForeignKey(
         User,
         related_name='pins',
