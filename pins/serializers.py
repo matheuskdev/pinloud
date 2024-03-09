@@ -25,8 +25,9 @@ class PinSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        user = self.context["request"].user
-        pin = super().create({**validated_data, "user": user})
+        ideas_data = self.context.get("request").data.getlist("ideas", [])
+        pin = Pin.objects.create(**validated_data)
+        pin.ideas.set(ideas_data)
         return pin
 
     def to_representation(self, instance):

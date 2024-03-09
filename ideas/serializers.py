@@ -10,4 +10,4 @@ class IdeaModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Idea
-        fields = ["title", "id", "user"]
+        fields = [ "id", "title", "user"]
