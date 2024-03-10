@@ -1,3 +1,4 @@
+import json
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import serializers
 
@@ -26,14 +27,11 @@ class PinSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ideas_data = self.context.get("request").data.getlist("ideas", [])
-        ideas_list_str = list(map(str, ideas_data))
-
-        output_list_ideas = ideas_list_str[0].split(",")
-        ideas_list_int = list(map(int, output_list_ideas))
-
+        string_json = ideas_data[0]
+        list_dict = json.loads(string_json)
+        list_value = [item['id'] for item in list_dict]
         pin = Pin.objects.create(**validated_data)
-        pin.ideas.set(ideas_list_int)
-
+        pin.ideas.set(list_value)
         return pin
 
     def to_representation(self, instance):
