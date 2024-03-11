@@ -27,9 +27,8 @@ class PinSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ideas_data = self.context.get("request").data.getlist("ideas", [])
-        string_json = ideas_data[0]
-        list_dict = json.loads(string_json)
-        list_value = [item['id'] for item in list_dict]
+        list_dict = json.loads(ideas_data[0])
+        list_value = [item['id'] for item in list_dict[0]]
         pin = Pin.objects.create(**validated_data)
         pin.ideas.set(list_value)
         return pin
