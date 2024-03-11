@@ -18,4 +18,9 @@ urlpatterns = [
         views.UserLoggedView.as_view(),
         name=views.UserLoggedView.name,
     ),
+    path(
+        "accounts/user/edit/<int:pk>",
+        views.UserUpdateView.as_view(),
+        name=views.UserUpdateView.name
+    )
 ]

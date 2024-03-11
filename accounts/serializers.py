@@ -81,3 +81,29 @@ class UserProfileSerializer(serializers.ModelSerializer):
                     f"http://{domain}{instance.profile_picture.url}"
                 )
         return representation
+
+
+class UserEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id',
+            'first_name',
+            'last_name',
+            'bio',
+            'website',
+            'profile_picture',
+            'password',
+            )
+        extra_kwargs = {
+            "password": {"write_only": True, "required": False},
+            "id": {"read_only": True}
+            }
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        instance = super().update(instance, validated_data)
+        if password:
+            instance.set_password(password)
+            instance.save()
+        return instance

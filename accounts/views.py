@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from pins.models import Pin
 from pins.serializers import PinUserSerializer
 
-from .serializers import UserRegistrationSerializer, UserSerializer
+from .serializers import UserEditSerializer, UserRegistrationSerializer, UserSerializer
 
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -44,3 +44,22 @@ class UserLoggedView(generics.RetrieveAPIView):
         ).data
 
         return Response({"user": user_serializer, "pins": pins_data})
+
+
+class UserUpdateView(generics.UpdateAPIView):
+    """View for editing the user profile."""
+    name = "user_edit"
+    serializer_class = UserEditSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
