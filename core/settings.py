@@ -94,15 +94,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 # CONFIG BASIC FOR OTHER DATABASE
 DATABASES = {
     'default': {
-        'ENGINE':   'django.db.backends.postgresql',
+        'ENGINE':   'django.db.backends.postgresql_psycopg2',
         'NAME':     'railway',
         'HOST':     'viaduct.proxy.rlwy.net',
         'USER':     'postgres',
         'PASSWORD': 'LdGVfucKcacJLOvoCFVTCmNYFKVDmmsR',
         'PORT':     '35951',
-        'OPTIONS': {
-            'init_command': 'SET default_storage_engine=InnoDB',
-        }
     }
 }
 
