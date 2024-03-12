@@ -83,28 +83,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-DATABASES = {
+""" DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
-}
-"""
+} """
+
+
 # CONFIG BASIC FOR OTHER DATABASE
 DATABASES = {
     'default': {
-        'ENGINE':   env('DB_ENG'),
-        'NAME':     env('DB_NAME'),
-        'HOST':     env('DB_HOST'),
-        'USER':     env('DB_USER'),
-        'PASSWORD': env('DB_PASS'),
-        'PORT':     env('DB_PORT'),
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     'railway',
+        'HOST':     'viaduct.proxy.rlwy.net',
+        'USER':     'postgres',
+        'PASSWORD': 'LdGVfucKcacJLOvoCFVTCmNYFKVDmmsR',
+        'PORT':     '35951',
         'OPTIONS': {
             'init_command': 'SET default_storage_engine=InnoDB',
         }
     }
 }
-"""
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
